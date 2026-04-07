@@ -107,7 +107,7 @@ function FeatureCard({
       variants={cardVariants}
       className={cn(
         "group relative isolate flex flex-col items-center justify-start overflow-hidden text-center",
-        "rounded-2xl border border-brand-dark p-8 sm:p-10",
+        "rounded-2xl border border-brand-navy p-8 sm:p-10",
         "shadow-md shadow-slate-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl",
       )}
     >

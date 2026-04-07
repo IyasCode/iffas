@@ -170,7 +170,7 @@ export function Module() {
     <section className="relative flex min-h-200 w-full flex-col items-center justify-center overflow-hidden bg-brand-cream py-20">
       {/* Semi-Circle Background Element */}
       <div
-        className="absolute left-0 top-0 z-0 h-80 w-full rounded-b-[70%] bg-brand-dark"
+        className="absolute left-0 top-0 z-0 h-80 w-full rounded-b-[70%] bg-brand-navy"
         aria-hidden="true"
       />
 

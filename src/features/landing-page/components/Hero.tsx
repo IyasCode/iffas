@@ -202,7 +202,7 @@ export function Hero({ className }: HeroProps) {
 
       {/* Bottom Void Space / Base Bar */}
       <div
-        className="relative z-10 h-12 w-full shrink-0 bg-brand-dark md:h-16 lg:h-24"
+        className="relative z-10 h-12 w-full shrink-0 bg-brand-navy md:h-16 lg:h-24"
         aria-hidden="true"
       />
     </section>

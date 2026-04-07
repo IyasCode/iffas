@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/shared/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +27,6 @@ export default function RootLayout({
     <html lang="en">
       {/* Set the body to flex column and minimum screen height to push footers down naturally if added later */}
       <body className="antialiased flex flex-col min-h-screen">
-        <Navbar />
         <main className="grow">{children}</main>
       </body>
     </html>

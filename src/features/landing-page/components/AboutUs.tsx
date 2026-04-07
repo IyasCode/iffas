@@ -77,7 +77,7 @@ export function AboutUs() {
     <section
       id="about-us"
       aria-labelledby="about-heading"
-      className="relative w-full overflow-hidden bg-brand-dark py-24 md:py-32"
+      className="relative w-full overflow-hidden bg-brand-navy py-24 md:py-32"
     >
       {/* Decorative Background Elements: Abstract Geometric Overlays */}
       <div className="pointer-events-none absolute inset-0 opacity-10">
