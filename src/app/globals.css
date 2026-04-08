@@ -86,6 +86,7 @@
   --color-brand-dark-yellow: #ca8a04;
   --color-brand-navy: #25435a;
   --color-brand-dark-navy: #192f41;
+  --color-brand-light-navy: #3a6a90;
   --color-brand-cream: #fff8e8;
   --color-brand-dark-cream: #ffeccf;
   --color-brand-light-gray: #d9d9d9;
@@ -258,4 +259,81 @@
 
 .sidebar-scroll::-webkit-scrollbar-thumb:hover {
   background-color: var(--color-slate-500);
+}
+
+/* ============================================================================
+   7. SHADCN SHEET (MOBILE SIDEBAR) NATIVE ANIMATIONS
+   ============================================================================ */
+
+/* Overlay Fades */
+@keyframes sheet-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes sheet-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Left Slide (For MobileSidebar) */
+@keyframes sheet-slide-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes sheet-slide-out-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Right Slide (Included for standard Sheet usage) */
+@keyframes sheet-slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes sheet-slide-out-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@utility animate-sheet-fade-in {
+  animation: sheet-fade-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@utility animate-sheet-fade-out {
+  animation: sheet-fade-out 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@utility animate-sheet-slide-in-left {
+  animation: sheet-slide-in-left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@utility animate-sheet-slide-out-left {
+  animation: sheet-slide-out-left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@utility animate-sheet-slide-in-right {
+  animation: sheet-slide-in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@utility animate-sheet-slide-out-right {
+  animation: sheet-slide-out-right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }

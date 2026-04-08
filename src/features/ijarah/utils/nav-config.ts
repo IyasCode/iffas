@@ -1,6 +1,3 @@
-import { BookOpen, Dumbbell, Calculator, LayoutDashboard } from "lucide-react";
-import { IjarahNavItem } from "../types/nav-types";
-
 /**
  * ============================================================================
  * FEATURE: Ijarah Module | LAYER: UI Configuration
@@ -11,6 +8,10 @@ import { IjarahNavItem } from "../types/nav-types";
  * and associates them with their required SVG iconography.
  * ============================================================================
  */
+
+import { BookOpen, Dumbbell, Calculator, LayoutDashboard } from "lucide-react";
+import { IjarahNavItem } from "../types/nav-types";
+
 export const IJARAH_NAV_CONFIG: IjarahNavItem[] = [
   {
     title: "Ijarah",

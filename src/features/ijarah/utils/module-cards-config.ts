@@ -1,5 +1,3 @@
-import { ModuleCardData } from "../types/module-card";
-
 /**
  * ============================================================================
  * FEATURE: Ijarah Module | LAYER: UI Configuration
@@ -8,6 +6,9 @@ import { ModuleCardData } from "../types/module-card";
  * Defines the immutable content for the main Ijarah module selection grid.
  * ============================================================================
  */
+
+import { ModuleCardData } from "../types/module-card";
+
 export const IJARAH_MODULE_CARDS: ModuleCardData[] = [
   {
     id: "learn",

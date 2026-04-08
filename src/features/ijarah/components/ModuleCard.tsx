@@ -1,8 +1,3 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { ModuleCardData } from "../types/module-card";
-import { cn } from "@/lib/utils/cn";
-
 /**
  * ============================================================================
  * FEATURE: Ijarah Module | LAYER: Presentation UI
@@ -14,6 +9,12 @@ import { cn } from "@/lib/utils/cn";
  * action link's arrow translation, entirely avoiding React state for animations.
  * ============================================================================
  */
+
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { ModuleCardData } from "../types/module-card";
+import { cn } from "@/lib/utils/cn";
+
 export function ModuleCard({ card }: { card: ModuleCardData }) {
   return (
     <Link

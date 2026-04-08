@@ -1,6 +1,7 @@
 /**
  * ============================================================================
- * FEATURE: Ijarah Module | LAYER: Presentation / Interactive UI
+ * FEATURE: Ijarah Module
+ * LAYER: Presentation / Interactive UI
  * FILE: src/features/ijarah/components/SidebarNav.tsx
  * ============================================================================
  * Renders the strictly typed curriculum navigation sidebar.
@@ -15,6 +16,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useMemo } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -27,16 +29,52 @@ import { cn } from "@/lib/utils/cn";
 export function SidebarNav() {
   const pathname = usePathname();
 
+  // Normalize current path to prevent trailing slash bugs
+  const currentPath = pathname.replace(/\/$/, "") || "/";
+
+  // Automatically expand the accordion group if the user is inside a sub-route
+  const defaultExpanded = useMemo(() => {
+    const activeItem = IJARAH_NAV_CONFIG.find((item) => {
+      const itemPath = (item.href || "").replace(/\/$/, "") || "/";
+      const isIjarahRoot = item.title.toLowerCase().includes("ijarah");
+
+      const isRootActive = isIjarahRoot
+        ? currentPath === itemPath
+        : currentPath.startsWith(itemPath);
+
+      const isSubActive = item.subItems?.some((sub) =>
+        currentPath.startsWith((sub.href || "").replace(/\/$/, "")),
+      );
+
+      return isRootActive || isSubActive;
+    });
+    return activeItem ? [activeItem.title] : [];
+  }, [currentPath]);
+
   return (
     <nav
-      className="w-full flex flex-col gap-2"
+      className="w-full flex flex-col gap-2 transform-gpu backdrop-blur-none"
       aria-label="Ijarah Curriculum Navigation"
     >
-      <Accordion type="multiple" className="w-full">
+      <Accordion
+        type="multiple"
+        defaultValue={defaultExpanded}
+        className="w-full"
+      >
         {IJARAH_NAV_CONFIG.map((item) => {
-          // Determine if we are anywhere within this section's sub-routes
-          const isItemActive = pathname.startsWith(item.href);
-          const isHeader = item.title === "Ijarah";
+          const itemPath = (item.href || "").replace(/\/$/, "") || "/";
+          const isIjarahRoot = item.title.toLowerCase().includes("ijarah");
+
+          // 1. ACTIVE STATE LOGIC:
+          // The main "Ijarah" button MUST be an exact match to prevent it from
+          // staying active when clicking "Learn" (/ijarah/learn).
+          // The other 4 buttons use startsWith so they stay active if you go to sub-pages.
+          const isExactMatch = currentPath === itemPath;
+          const isPrefixMatch = currentPath.startsWith(itemPath + "/");
+
+          const isItemActive = isIjarahRoot
+            ? isExactMatch
+            : isExactMatch || isPrefixMatch;
 
           return (
             <AccordionItem
@@ -46,73 +84,95 @@ export function SidebarNav() {
             >
               <div
                 className={cn(
-                  "flex items-center w-full min-h-11 transition-colors group rounded-md mt-1",
-                  "hover:bg-brand-dark-navy hover:cursor-pointer hover:font-bold",
-                  isItemActive
-                    ? "bg-brand-dark-navy text-brand-yellow font-bold"
-                    : "text-white",
+                  "flex items-stretch w-full min-h-11 transition-colors group rounded-md mt-1 relative",
+                  "hover:bg-brand-dark-navy",
+                  isItemActive ? "bg-brand-dark-navy" : "",
                 )}
               >
-                {/* The Navigational Link (Takes up maximum available space for easy tapping) */}
+                {/* 2. D-SHAPE LOGIC: 
+                  Applied ONLY to the main "Ijarah" button when active.
+                  Explicitly excludes the other 4 top-level buttons. 
+                */}
+                {isItemActive && isIjarahRoot && (
+                  <div className="absolute left-px top-1/2 -translate-y-1/2 w-1.5 h-7/8 bg-brand-yellow rounded-r-full" />
+                )}
+
+                {/* The Navigational Link */}
                 <Link
                   href={item.href}
-                  className="flex-1 flex items-center p-3 outline-none focus-visible:ring-2 focus-visible:ring-brand-dark-yellow rounded-l-md"
+                  className={cn(
+                    "flex-1 flex items-center outline-none focus-visible:ring-2 focus-visible:ring-brand-dark-yellow rounded-l-md",
+                    isIjarahRoot ? "p-1 justify-center" : "p-3",
+                  )}
                 >
-                  <item.icon
-                    className={cn(
-                      "mr-3 h-5 w-5 transition-colors",
-                      isItemActive ? "stroke-brand-yellow" : "stroke-white",
-                      isHeader && "invisible",
-                    )}
-                  />
+                  {/* 3. ICON LOGIC:
+                    Rendered for the 4 buttons (Learn, Practice, etc.).
+                    Hidden for the "Ijarah" button as it relies on the D-Shape.
+                  */}
+                  {item.icon && !isIjarahRoot && (
+                    <item.icon
+                      className={cn(
+                        "mr-3 h-5 w-5 transition-colors",
+                        isItemActive
+                          ? "stroke-brand-yellow text-brand-yellow"
+                          : "stroke-white text-white",
+                      )}
+                    />
+                  )}
+
                   <span
                     className={cn(
-                      "font-arial-hebrew tracking-wide text-[18px]",
-                      isHeader && "text-[28px] font-bold",
+                      "font-arial-hebrew tracking-wide transition-colors antialiased",
+                      isIjarahRoot
+                        ? "text-[32px] text-center font-bold"
+                        : "text-[18px]",
+                      isItemActive
+                        ? "text-brand-yellow font-bold"
+                        : "text-white group-hover:font-bold",
                     )}
                   >
                     {item.title}
                   </span>
                 </Link>
 
-                {/* The Accordion Toggle (Isolated click target for the Chevron) */}
+                {/* The Accordion Toggle (Isolated hit target for Chevron) */}
                 {item.subItems && item.subItems.length > 0 && (
                   <AccordionTrigger
                     aria-label={`Toggle ${item.title} sub-menu`}
                     className={cn(
-                      "p-3 flex-none hover:no-underline rounded-r-md",
-                      // Override standard Shadcn animations: point right (>) when closed, down (v) when open
-                      "[&[data-state=closed]>svg]:-rotate-90 [&[data-state=open]>svg]:rotate-0",
+                      "flex flex-none items-center justify-center px-4 py-0 hover:no-underline rounded-r-md outline-none",
+                      "focus-visible:ring-2 focus-visible:ring-brand-dark-yellow",
+                      "text-slate-400 hover:text-white data-[state=open]:text-brand-yellow",
                     )}
-                  >
-                    {/* Children intentionally left empty so ONLY the default Shadcn chevron renders here */}
-                  </AccordionTrigger>
+                  />
                 )}
               </div>
 
               {/* Sub-Item Rendering */}
               {item.subItems && (
                 <AccordionContent className="pb-0 pt-1">
-                  <div className="flex flex-col space-y-1 ml-4 pl-4 border-l border-white/50">
+                  <div className="flex flex-col space-y-1 ml-4 pl-4 border-l border-white/20">
                     {item.subItems.map((sub) => {
-                      const isSubActive = pathname === sub.href;
+                      const subPath =
+                        (sub.href || "").replace(/\/$/, "") || "/";
+                      const isSubActive = currentPath === subPath;
 
                       return (
                         <Link
                           key={sub.title}
                           href={sub.href}
                           className={cn(
-                            "relative flex items-center min-h-10 pl-4 pr-3 py-2 transition-colors",
+                            "relative flex items-center min-h-10 pl-4 pr-3 py-2 transition-colors antialiased",
                             "hover:bg-brand-dark-navy hover:cursor-pointer hover:font-bold rounded-r-md",
                             "font-arial-hebrew text-[16px]",
                             isSubActive
                               ? "bg-brand-dark-navy text-brand-yellow font-bold"
-                              : "text-white",
+                              : "text-slate-300",
                           )}
                         >
-                          {/* The Thin "D-Shape" Active Indicator */}
+                          {/* D-Shape for Sub-Sections */}
                           {isSubActive && (
-                            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-5/6 bg-brand-yellow rounded-r-full" />
+                            <div className="absolute -left-px top-1/2 -translate-y-1/2 w-0.75 h-5/6 bg-brand-yellow rounded-r-full" />
                           )}
                           {sub.title}
                         </Link>

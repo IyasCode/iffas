@@ -25,7 +25,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      {/* Set the body to flex column and minimum screen height to push footers down naturally if added later */}
       <body className="antialiased flex flex-col min-h-screen">
         <main className="grow">{children}</main>
       </body>

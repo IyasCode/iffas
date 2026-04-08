@@ -10,7 +10,7 @@ export interface IjarahNavSubItem {
 
 /**
  * Represents a primary navigational pillar in the Ijarah module.
- * Accommodates the strict SVG icon requirements and active state mapping.
+ * Accommodates the SVG icon requirements and active state mapping.
  */
 export interface IjarahNavItem {
   title: string;
