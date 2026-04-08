@@ -17,7 +17,7 @@ export default function IjarahLayout({ children }: { children: ReactNode }) {
       {/* Aligned Desktop Sidebar structurally matching Mobile Sheet Content 
         w-[280px], bg-brand-navy, flex-col, sticky
       */}
-      <aside className="hidden md:flex w-[240px] shrink-0 flex-col bg-brand-navy border-r border-slate-300 sticky top-0 h-screen overflow-hidden">
+      <aside className="hidden md:flex w-60 shrink-0 flex-col bg-brand-navy border-r border-slate-300 sticky top-0 h-screen overflow-hidden">
         {/* Pinned Header matching the MobileSidebar exactly */}
         <div className="flex justify-center items-center p-3 bg-brand-light-navy border-b border-brand-light-navy shrink-0">
           <Image

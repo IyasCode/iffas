@@ -21,9 +21,9 @@ export function ModuleCard({ card }: { card: ModuleCardData }) {
       href={card.href}
       className={cn(
         "group flex flex-col justify-between bg-white rounded-3xl p-4 border-2 border-brand-navy",
-        "border-4 border-transparent shadow-neumorphic-idle transition-all duration-300 ease-in-out",
+        "border-2 border-transparent shadow-neumorphic-idle transition-all duration-300 ease-in-out",
         "hover:-translate-y-1 hover:border-brand-navy hover:shadow-neumorphic-active",
-        "cursor-pointer outline-none focus-visible:ring-4 focus-visible:ring-brand-navy",
+        "cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-brand-navy",
       )}
       aria-label={`Maps to ${card.title} module`}
     >

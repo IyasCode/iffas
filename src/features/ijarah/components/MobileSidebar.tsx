@@ -42,7 +42,7 @@ export function MobileSidebar() {
           <SheetContent
             side="left"
             className={cn(
-              "bg-brand-navy border-brand-light-navy p-0 w-[280px] flex flex-col",
+              "bg-brand-navy border-brand-light-navy p-0 w-70 flex flex-col",
               // Target and style the default Shadcn injected close button
               "[&>button]:text-slate-400 hover:[&>button]:text-white [&>button]:focus:ring-brand-dark-yellow [&>button]:focus:ring-offset-slate-900",
             )}
