@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 to-indigo-50 p-8 box-border">
-      <div className="max-w-[720px] w-full text-center p-12 rounded-xl bg-white shadow-lg border border-slate-100">
+    <main className="min-h-screen flex items-center justify-center bg-linear-to-b from-slate-50 to-indigo-50 p-8 box-border">
+      <div className="max-w-180 w-full text-center p-12 rounded-xl bg-white shadow-lg border border-slate-100">
         <div aria-hidden className="text-[48px] leading-none mb-3">
           🚧
         </div>

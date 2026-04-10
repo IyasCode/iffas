@@ -1,22 +1,29 @@
-import type { Metadata } from "next";
+/**
+ * ============================================================================
+ * FEATURE: Ijarah | LAYER: Next.js Route Orchestrator
+ * FILE: src/app/(modules)/ijarah/[slug]/page.tsx
+ * ============================================================================
+ * Dynamic route orchestrator for Ijarah sub-lessons and chapter menus.
+ * ============================================================================
+ */
 
-export const metadata: Metadata = {
-  title: "Coming Soon",
-  description: "page coming soon",
-};
+import { notFound } from "next/navigation";
+import { ChapterMenu } from "@/features/ijarah/components/ChapterMenu";
 
-export default function Page() {
-  return (
-    <main className="min-h-screen flex items-center justify-center bg-linear-to-b from-slate-50 to-indigo-50 p-8 box-border">
-      <div className="max-w-180 w-full text-center p-12 rounded-xl bg-white shadow-lg border border-slate-100">
-        <div aria-hidden className="text-[48px] leading-none mb-3">
-          🚧
-        </div>
-        <h1 className="m-0 text-[32px] text-white">Coming soon</h1>
-        <p className="mt-2 text-slate-500">
-          The course page is under construction. Check back soon for updates.
-        </p>
-      </div>
-    </main>
-  );
+interface IjarahSlugPageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function IjarahSlugPage({ params }: IjarahSlugPageProps) {
+  // Await the asynchronous params object
+  const { slug } = await params;
+
+  // Intercept the specific Chapter 1 intent
+  if (slug === "chapter-1") {
+    return <ChapterMenu />;
+  }
+
+  // Fallback: If a student tries to access an unmapped curriculum node,
+  // structurally guide them to the custom 404 boundary (not-found.tsx)
+  notFound();
 }
