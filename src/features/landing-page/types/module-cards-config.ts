@@ -10,11 +10,13 @@
 
 // --- Types & Interfaces ---
 export interface CourseModule {
-  id: number;
-  title: string;
-  description: string;
-  available: boolean;
-  bgImage: string;
+  readonly id: number;
+  readonly title: string;
+  readonly description: string;
+  readonly keyConcepts: string[];
+  readonly available: boolean;
+  readonly bgImage: string;
+  readonly href: string;
 }
 
 // --- Data Structure ---
@@ -23,56 +25,100 @@ export const COURSES_DATA: CourseModule[] = [
     id: 1,
     title: "Ijarah (Islamic Leasing)",
     description:
-      "Discover how Islamic banks structure and calculate leases. Learn the mechanics behind calculating rent, Internal Rate of Return (IRR), and profit while understanding IAS 17 accounting standards. You will also explore practical scenarios like depreciation, floating-rate profits, and how to handle defaults or early terminations.",
+      "Discover how Islamic banks effectively structure and calculate complex lease agreements.",
+    keyConcepts: [
+      "Rent & IRR calculation",
+      "IAS 17 accounting standards",
+      "Depreciation",
+      "Default & termination handling",
+    ],
     available: true,
     bgImage: "/module-bg1.webp",
+    href: "/ijarah",
   },
   {
     id: 2,
     title: "Diminishing Musharakah",
     description:
-      "Explore one of the most reliable methods for Islamic property financing. Follow step-by-step redemption schedules to understand how joint ownership between a bank and a client works. Learn the core operational differences that set equity-based home financing apart from conventional interest-based mortgages.",
+      "Explore the core operational mechanics of equity-based Islamic property financing.",
+    keyConcepts: [
+      "Joint ownership structures",
+      "Step-by-step redemption schedules",
+      "Conventional mortgage comparisons",
+    ],
     available: false,
     bgImage: "/module-bg2.webp",
+    href: "/musharakah",
   },
   {
     id: 3,
     title: "Mudarabah Deposit Accounts",
     description:
-      "Dive into the structure of profit-paying deposit accounts in Islamic banking. Master the concept of weightages and the step-by-step profit calculations used to manage investor funds. Understand how profits are distributed among different investors and the bank, building a solid foundation in depositor management.",
+      "Master the structures and step-by-step profit calculations of Islamic deposit accounts.",
+    keyConcepts: [
+      "Weightage implementation",
+      "Investor fund management",
+      "Profit distribution frameworks",
+    ],
     available: false,
     bgImage: "/module-bg3.webp",
+    href: "/mudarabah",
   },
   {
     id: 4,
     title: "Murabahah Calculations",
     description:
-      "Bridge the gap between theory and practice in Murabahah financing. Get hands-on with practical computations for collection periods, inventory days, operating cycles, profit limits, and pricing. This module provides the real-world analytical tools needed to confidently structure and calculate Murabahah transactions.",
+      "Bridge the gap between Murabahah financing theory and real-world execution.",
+    keyConcepts: [
+      "Operating cycle calculations",
+      "Profit limit analysis",
+      "Transaction pricing & structuring",
+    ],
     available: false,
     bgImage: "/module-bg4.webp",
+    href: "/murabahah",
   },
   {
     id: 5,
     title: "Asset Pool Management",
     description:
-      "Learn the essential techniques Islamic banks use to manage deposits, inter-bank investments, and equity. This module covers practical tools for investment pool management, including pool composition, fund tracking, income calculation, profit-sharing ratios, and distribution mechanisms.",
+      "Learn the essential techniques used to manage deposits, inter-bank investments, and equity.",
+    keyConcepts: [
+      "Pool composition",
+      "Fund tracking",
+      "Profit-sharing ratios",
+      "Income distribution",
+    ],
     available: false,
     bgImage: "/module-bg5.webp",
+    href: "/asset-management",
   },
   {
     id: 6,
     title: "Profit Calculation Framework",
     description:
-      "Understand the complex mechanics of calculating profit in a dynamic banking environment with thousands of daily transactions. Explore the three primary methods Islamic banks use to calculate and distribute profit, identify industry-recommended best practices, and test your knowledge with hands-on numerical exercises.",
+      "Navigate the complex mechanics of calculating and distributing profit in a dynamic banking environment.",
+    keyConcepts: [
+      "Primary calculation methods",
+      "Industry best practices",
+      "High-volume transaction analysis",
+    ],
     available: false,
     bgImage: "/module-bg6.webp",
+    href: "/profit-calculation",
   },
   {
     id: 7,
     title: "Sukuk (Islamic Bonds)",
     description:
-      "Master the intricacies of AAOIFI compliance in the Sukuk market. Through a side-by-side case study of real-world Sukuks, learn to analyze documentation and pinpoint exactly what makes a Sukuk truly compliant. Develop the critical evaluation skills that are highly valued in the modern Islamic finance industry.",
+      "Master the intricacies of AAOIFI compliance in the global Sukuk market.",
+    keyConcepts: [
+      "Side-by-side case studies",
+      "Documentation analysis",
+      "Compliance evaluation",
+    ],
     available: false,
     bgImage: "/module-bg7.webp",
+    href: "/sukuk",
   },
 ];

@@ -17,6 +17,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { cn } from "@/lib/utils/cn";
 import { COURSES_DATA } from "../types/module-cards-config";
 
@@ -190,26 +191,45 @@ export function Module() {
                     {course.title}
                   </h3>
 
-                  <div className="flex grow items-center">
-                    <p className="text-center text-base leading-relaxed text-white sm:text-lg">
+                  <div className="flex grow flex-col justify-center gap-6">
+                    <p className="text-center text-base leading-relaxed text-slate-100 sm:text-lg">
                       {course.description}
                     </p>
+
+                    {/* Pedagogical Key Concepts Mapping */}
+                    <ul
+                      className="flex flex-wrap justify-center gap-2"
+                      aria-label={`Key concepts for ${course.title}`}
+                    >
+                      {course.keyConcepts.map((concept) => (
+                        <li
+                          key={concept}
+                          className="rounded-md border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium tracking-wide text-white backdrop-blur-sm sm:text-sm"
+                        >
+                          {concept}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
 
                   {/* Call To Action */}
-                  <div className="mt-auto flex w-full justify-center pt-6">
+
+                  <Link
+                    href={course.href}
+                    className="mt-6 flex w-full justify-center "
+                  >
                     <button
                       disabled={!course.available}
                       className={cn(
-                        "w-full rounded-xl py-4 text-lg font-semibold transition-all duration-300",
+                        "w-full rounded-xl py-4 text-lg font-semibold transition-all duration-300 cursor-pointer",
                         course.available
                           ? "bg-emerald-600 text-white shadow-[0_0_15px_rgba(5,150,105,0.4)] hover:bg-emerald-500"
                           : "cursor-not-allowed bg-slate-700 text-slate-400",
                       )}
                     >
-                      {course.available ? "Proceed to module" : "Coming soon"}
+                      {course.available ? "Explore module" : "Coming soon"}
                     </button>
-                  </div>
+                  </Link>
                 </div>
               </motion.div>
             );
