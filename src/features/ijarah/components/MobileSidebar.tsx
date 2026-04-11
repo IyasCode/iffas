@@ -4,13 +4,17 @@
  * FILE: src/features/ijarah/components/MobileSidebar.tsx
  * ============================================================================
  * Orchestrates the mobile-first navigation wrapper.
- * Utilizes Shadcn <Sheet> primitive to slide out the SidebarNav on small viewports
- * without duplicating the complex state mapping logic of the sidebar itself.
+ * Utilizes Shadcn <Sheet> primitive to slide out the SidebarNav on small viewports.
+ * * ARCHITECTURE NOTE: We utilize a controlled state `isOpen` synchronized with
+ * the Next.js `usePathname` hook to ensure the drawer automatically closes
+ * upon successful client-side navigation.
  * ============================================================================
  */
 
 "use client";
 
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import {
@@ -24,10 +28,21 @@ import { SidebarNav } from "./SidebarNav";
 import { cn } from "@/lib/utils/cn";
 
 export function MobileSidebar() {
+  // 1. Establish controlled state for the Shadcn Sheet
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  // 2. Synchronize UI state with the Next.js routing engine.
+  // Whenever the pathname changes (user clicks a link), slam the door shut.
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   return (
     <header className="sticky top-0 z-50 flex md:hidden items-center justify-between p-4 bg-brand-navy text-white border-b border-slate-800">
       <div className="flex items-center gap-4">
-        <Sheet>
+        {/* 3. Bind the state to the Sheet primitive */}
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button
               variant="ghost"
