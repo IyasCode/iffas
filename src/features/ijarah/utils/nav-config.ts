@@ -23,11 +23,11 @@ export const IJARAH_NAV_CONFIG: IjarahNavItem[] = [
     href: "/ijarah/learn",
     icon: BookOpen,
     subItems: [
-      { title: "Chapter 1", href: "/ijarah/chapter-1" },
-      { title: "Chapter 2", href: "/ijarah/chapter-2" },
-      { title: "Chapter 3", href: "/ijarah/chapter-3" },
-      { title: "Chapter 4", href: "/ijarah/chapter-4" },
-      { title: "Chapter 5", href: "/ijarah/chapter-5" },
+      { title: "Chapter 1: Anatomy", href: "/ijarah/chapter-1" },
+      { title: "Chapter 2: Foundation", href: "/ijarah/chapter-2" },
+      { title: "Chapter 3: Profit", href: "/ijarah/chapter-3" },
+      { title: "Chapter 4: Schedule", href: "/ijarah/chapter-4" },
+      { title: "Chapter 5: Volatility", href: "/ijarah/chapter-5" },
     ],
   },
   {
