@@ -13,6 +13,8 @@
 import Link from "next/link";
 import { IjarahLesson } from "../utils/chapters-data";
 import { MenuListItem } from "./MenuListItem";
+import { LessonOverlay } from "./LessonOverlay";
+import { lesson1Data } from "../utils/lesson-1-data";
 
 interface ChapterMenuProps {
   chapterTitle: string;
@@ -66,6 +68,10 @@ export function ChapterMenu({ chapterTitle, lessons }: ChapterMenuProps) {
           <MenuListItem key={lesson.id} lesson={lesson} index={index} />
         ))}
       </nav>
+
+      {/* Mount the overlay. It remains hidden until the URL matches. */}
+      {/* Note: In a production scaling phase, you would dynamically select the lesson data here based on the active lessonId */}
+      <LessonOverlay lesson={lesson1Data} />
     </div>
   );
 }

@@ -31,8 +31,12 @@ export function MenuListItem({ lesson, index }: MenuListItemProps) {
         isOdd ? "translate-x-8 md:translate-x-12" : "translate-x-0",
       )}
     >
-      {/* Interactive Portal (Client Component Boundary) */}
-      <InteractivePortal isActive={lesson.isActive} title={lesson.title} />
+      {/* Pass the lessonId here */}
+      <InteractivePortal
+        isActive={lesson.isActive}
+        title={lesson.title}
+        lessonId={lesson.id}
+      />
       <div className="flex flex-col gap-1">
         <span className="text-sm font-bold text-brand-navy block md:text-[18px] leading-none">
           {lesson.lessonNumber}

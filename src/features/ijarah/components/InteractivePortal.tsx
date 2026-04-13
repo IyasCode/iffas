@@ -16,15 +16,24 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils/cn";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface InteractivePortalProps {
   isActive: boolean;
   title: string;
+  lessonId: string; // <-- Add this prop
 }
 
-export function InteractivePortal({ isActive, title }: InteractivePortalProps) {
+export function InteractivePortal({
+  isActive,
+  title,
+  lessonId,
+}: InteractivePortalProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   // Define our distinct, physics-based animation states
   const portalVariants = {
@@ -37,26 +46,17 @@ export function InteractivePortal({ isActive, title }: InteractivePortalProps) {
     hovered: {
       y: -8,
       scale: 1,
-      transition: {
-        duration: 0.3,
-        ease: "easeInOut",
-      },
+      transition: { duration: 0.3, ease: "easeInOut" },
     },
     // Click Animation for Blue Portal (Shrink, Grow, Normalize)
     clickedActive: {
       scale: [1, 0.8, 1.1, 1],
-      transition: {
-        duration: 0.5,
-        ease: "easeInOut",
-      },
+      transition: { duration: 0.5, ease: "easeInOut" },
     },
     // Shake Animation for Gray Portal
     clickedInactive: {
       x: [0, -5, 5, -5, 5, -5, 0],
-      transition: {
-        duration: 0.5,
-        ease: "easeInOut",
-      },
+      transition: { duration: 0.5, ease: "easeInOut" },
     },
   };
 
@@ -69,21 +69,34 @@ export function InteractivePortal({ isActive, title }: InteractivePortalProps) {
       ? "hovered"
       : "idle";
 
+  const handleClick = () => {
+    if (isClicked) return; // Prevent spam clicking
+
+    setIsClicked(true);
+
+    // Reset click state after animation duration
+    setTimeout(() => setIsClicked(false), 500);
+
+    // Only route if the lesson is unlocked/active
+    if (isActive) {
+      setTimeout(() => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("lessonId", lessonId);
+        router.push(`?${params.toString()}`, { scroll: false });
+      }, 600);
+    }
+  };
+
   return (
     <button
       type="button"
-      // preventing mobile taps from getting stuck in the "hovered" state.
       onPointerEnter={(e) => {
         if (e.pointerType === "mouse") setIsHovered(true);
       }}
       onPointerLeave={(e) => {
         if (e.pointerType === "mouse") setIsHovered(false);
       }}
-      onClick={() => {
-        setIsClicked(true);
-        // Reset click state after the animation duration (500ms) so it can be triggered again
-        setTimeout(() => setIsClicked(false), 500);
-      }}
+      onClick={handleClick}
       aria-label={`Open lesson: ${title}`}
       className="group relative flex items-center justify-center w-20 h-20 shrink-0 md:w-30 md:h-30 appearance-none outline-none focus-visible:ring-2 focus-visible:ring-brand-navy rounded-full"
     >
