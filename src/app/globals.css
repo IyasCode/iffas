@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
 
 /* ============================================================================
    1. BASE SHADCN UI TOKENS (HSL Values) & DARK MODE

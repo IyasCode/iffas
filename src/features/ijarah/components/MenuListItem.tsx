@@ -26,22 +26,29 @@ export function MenuListItem({ lesson, index }: MenuListItemProps) {
   return (
     <div
       className={cn(
-        "relative flex items-center gap-6 transition-transform duration-300",
+        "relative flex items-center gap-6 md:gap-10 transition-transform duration-500",
         // Apply horizontal shift for alternating items
-        isOdd ? "translate-x-8 md:translate-x-14" : "translate-x-0",
+        isOdd ? "translate-x-8 md:translate-x-16" : "translate-x-0",
+        // Animation classes: Rise from bottom
+        "animate-in fade-in slide-in-from-bottom-12 duration-700",
       )}
+      style={{
+        // Stagger the animation so they rise one after another
+        animationDelay: `${index * 150}ms`,
+        // Ensures the elements stay invisible before their specific delay starts
+        animationFillMode: "both",
+      }}
     >
-      {/* Pass the lessonId here */}
       <InteractivePortal
         isActive={lesson.isActive}
         title={lesson.title}
         lessonId={lesson.id}
       />
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold text-brand-navy block md:text-[18px] leading-none">
+      <div className="flex flex-col gap-1 select-none">
+        <span className="text-sm font-bold text-brand-navy block md:text-xl leading-none">
           {lesson.lessonNumber}
         </span>
-        <span className="text-brand-navy font-bold text-lg md:whitespace-nowrap md:text-3xl leading-none">
+        <span className="text-brand-navy font-bold text-lg md:text-3xl leading-tight">
           {lesson.title}
         </span>
       </div>

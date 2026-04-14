@@ -21,11 +21,9 @@ interface ChapterMenuProps {
 
 export function ChapterMenu({ chapterTitle, lessons }: ChapterMenuProps) {
   return (
-    <div className="flex flex-col items-center justify-start w-full min-h-screen py-6 md:py-20 px-6 bg-brand-cream relative">
-      {/* Mobile Back Button (Strictly md:hidden)
-        Placed at the top of the content flow, immediately under the sticky MobileSidebar.
-      */}
-      <div className="w-full max-w-md flex md:hidden mb-8">
+    <div className="flex flex-col items-center justify-start w-full min-h-screen py-6 md:py-20 px-6 bg-brand-cream relative overflow-hidden">
+      {/* Mobile Back Button (Strictly md:hidden) */}
+      <div className="w-full max-w-md flex md:hidden mb-8 animate-in fade-in duration-300">
         <Link
           href="/ijarah/learn"
           className="group inline-flex items-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-brand-navy rounded-md p-1"
@@ -52,8 +50,8 @@ export function ChapterMenu({ chapterTitle, lessons }: ChapterMenuProps) {
         </Link>
       </div>
 
-      {/* Dynamic Chapter Header */}
-      <h1 className="mb-12 md:mb-16 text-3xl font-extrabold tracking-wide text-center md:text-4xl text-brand-navy">
+      {/* Dynamic Chapter Header - Drops from Top */}
+      <h1 className="mb-12 md:mb-16 text-3xl font-extrabold tracking-wide text-center md:text-4xl text-brand-navy animate-in fade-in duration-1000 ease-out">
         {chapterTitle}
       </h1>
 
