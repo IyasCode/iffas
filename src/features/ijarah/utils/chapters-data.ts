@@ -1,6 +1,7 @@
 /**
  * ============================================================================
- * FEATURE: Ijarah | LAYER: Utility / Data Configuration
+ * FEATURE: Ijarah
+ * LAYER: Utility / Data Configuration
  * FILE: src/features/ijarah/utils/chapters-data.ts
  * ============================================================================
  * Centralized data dictionary for the Ijarah module chapters.
@@ -28,7 +29,7 @@ export const IJARAH_CHAPTERS_DATA: Record<string, IjarahChapterConfig> = {
     lessons: [
       {
         id: "1",
-        title: "The Anatomy of an Ijarah",
+        title: "The Substance of Service",
         lessonNumber: "Lesson 1:",
         isActive: true,
       },
@@ -36,7 +37,7 @@ export const IJARAH_CHAPTERS_DATA: Record<string, IjarahChapterConfig> = {
         id: "2",
         title: "The Structural Divergence",
         lessonNumber: "Lesson 2:",
-        isActive: false,
+        isActive: true,
       },
       {
         id: "3",

@@ -5,23 +5,24 @@
  * FILE: src/features/ijarah/components/InteractivePortal.tsx
  * ============================================================================
  * A leaf-node client component that handles the interactive animations
- * for the lesson portal image.
+ * for the lesson portal image. It bridges user interaction with the Next.js routing layer.
  * * ARCHITECTURE NOTE: We utilize Framer Motion (`motion.div`) instead of
  * CSS keyframes to prevent the "jump/snap" bug when a user un-hovers mid-bounce.
  * ============================================================================
  */
+
 "use client";
 
 import { useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { cn } from "@/lib/utils/cn";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface InteractivePortalProps {
   isActive: boolean;
   title: string;
-  lessonId: string; // <-- Add this prop
+  lessonId: string;
 }
 
 export function InteractivePortal({
@@ -35,8 +36,8 @@ export function InteractivePortal({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Define our distinct, physics-based animation states
-  const portalVariants = {
+  // Strictly typed variants to prevent animation "snapping"
+  const portalVariants: Variants = {
     idle: {
       x: 0,
       y: 0,
@@ -60,18 +61,8 @@ export function InteractivePortal({
     },
   };
 
-  // Determine the current active animation state dynamically based on isActive prop
-  const currentAnimation = isClicked
-    ? isActive
-      ? "clickedActive"
-      : "clickedInactive"
-    : isHovered
-      ? "hovered"
-      : "idle";
-
-  const handleClick = () => {
-    if (isClicked) return; // Prevent spam clicking
-
+  const handlePortalClick = () => {
+    if (isClicked) return;
     setIsClicked(true);
 
     // Reset click state after animation duration
@@ -90,35 +81,42 @@ export function InteractivePortal({
   return (
     <button
       type="button"
-      onPointerEnter={(e) => {
-        if (e.pointerType === "mouse") setIsHovered(true);
-      }}
-      onPointerLeave={(e) => {
-        if (e.pointerType === "mouse") setIsHovered(false);
-      }}
-      onClick={handleClick}
-      aria-label={`Open lesson: ${title}`}
-      className="group relative flex items-center justify-center w-20 h-20 shrink-0 md:w-30 md:h-30 appearance-none outline-none focus-visible:ring-2 focus-visible:ring-brand-navy rounded-full"
+      onClick={handlePortalClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      aria-label={`Open ${isActive ? "active" : "locked"} lesson: ${title}`}
+      className={cn(
+        "group relative flex items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-brand-navy cursor-pointer",
+        "w-20 h-20 md:w-32 md:h-32 shrink-0", // shrink-0 ensures the icon is NEVER squeezed
+      )}
     >
-      {/* Framer Motion Wrapper for smooth animations */}
       <motion.div
-        variants={portalVariants as any}
-        animate={currentAnimation}
-        className="relative flex items-center justify-center w-full h-full cursor-pointer"
+        variants={portalVariants}
+        animate={
+          isClicked
+            ? isActive
+              ? "clickedActive"
+              : "clickedInactive"
+            : isHovered
+              ? "hovered"
+              : "idle"
+        }
+        className="relative w-full h-full flex items-center justify-center"
       >
         {/* The Base SVG Framework */}
         <Image
           src={isActive ? "/portal-blue.svg" : "/portal-gray.svg"}
           alt=""
           fill
-          sizes="(max-width: 120px) 100vw, 120px"
-          className="object-contain relative z-10 pointer-events-none"
+          priority // Ensure navigation icons are prioritized during paint
+          className="object-contain z-10"
+          sizes="(max-width: 128px) 100vw, 128px"
         />
 
         {/* The Glow Overlay (Masking Technique) */}
         <div
           className={cn(
-            "absolute inset-0 z-20 pointer-events-none transition-opacity duration-300 ease-in-out",
+            "absolute inset-0 z-20 pointer-events-none transition-opacity duration-300",
             "mask-[url('/glow.svg')] mask-contain mask-no-repeat mask-center",
             isHovered ? "opacity-40" : "opacity-0",
             isActive ? "bg-[#2AD4FF]" : "bg-[#B3B3B3]",

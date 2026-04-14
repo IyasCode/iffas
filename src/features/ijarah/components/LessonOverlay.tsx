@@ -70,10 +70,14 @@ export function LessonOverlay({ lesson }: LessonOverlayProps) {
 
         {/* Main Scrolling Container */}
         <div className="flex-1 overflow-y-auto px-6 md:px-16 pb-40 scroll-smooth">
-          <div className="max-w-3xl mx-auto py-8">
+          {/* aria-live ensures screen readers announce new segments as they appear */}
+          <div
+            className="max-w-3xl mx-auto py-8"
+            aria-live="polite"
+            aria-atomic="false"
+          >
             {revealedSegments.map((segment, index) => {
               const isNewest = index === revealedSegments.length - 1;
-
               return (
                 <div
                   key={segment.id}

@@ -1,6 +1,7 @@
 /**
  * ============================================================================
- * FEATURE: Ijarah Module | LAYER: Presentation / Layout Shell
+ * FEATURE: Ijarah Module
+ * LAYER: Presentation / Layout Shell
  * FILE: src/features/ijarah/components/MobileSidebar.tsx
  * ============================================================================
  * Orchestrates the mobile-first navigation wrapper.

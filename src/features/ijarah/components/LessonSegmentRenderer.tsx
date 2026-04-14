@@ -37,7 +37,8 @@ export function LessonSegmentRenderer({
               {segment.title}
             </h2>
           )}
-          <p className="whitespace-pre-wrap leading-relaxed text-lg text-brand-navy/90">
+          {/* Apply tabular-nums to ensure financial figures align correctly */}
+          <p className="whitespace-pre-wrap leading-relaxed text-lg text-brand-navy/90 tabular-nums">
             {segment.content}
           </p>
         </div>
@@ -46,6 +47,7 @@ export function LessonSegmentRenderer({
     case "VISUAL":
       return (
         <div className="py-8 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          {/* Optimized Next.js Image with strict aspect-ratio */}
           <div className="relative w-full aspect-video overflow-hidden rounded-xl border-2 border-brand-light-gray shadow-md">
             <Image
               src={segment.imageSrc}

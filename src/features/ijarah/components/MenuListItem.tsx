@@ -28,7 +28,7 @@ export function MenuListItem({ lesson, index }: MenuListItemProps) {
       className={cn(
         "relative flex items-center gap-6 transition-transform duration-300",
         // Apply horizontal shift for alternating items
-        isOdd ? "translate-x-8 md:translate-x-12" : "translate-x-0",
+        isOdd ? "translate-x-8 md:translate-x-14" : "translate-x-0",
       )}
     >
       {/* Pass the lessonId here */}
