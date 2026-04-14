@@ -31,7 +31,12 @@ export function CurriculumTimeline() {
               aria-hidden="true"
             />
 
-            <div className="md:pl-16">
+            <div
+              className={cn(
+                "md:pl-16",
+                "animate-in fade-in slide-in-from-bottom-12 duration-700 ease-out",
+              )}
+            >
               {/* Explicitly passing 0. Later, replace with actual completion data. */}
               <ChapterCard chapter={chapter} progress={0} />
             </div>

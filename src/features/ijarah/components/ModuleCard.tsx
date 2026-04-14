@@ -15,15 +15,28 @@ import { ArrowRight } from "lucide-react";
 import { ModuleCardData } from "../types/module-card";
 import { cn } from "@/lib/utils/cn";
 
-export function ModuleCard({ card }: { card: ModuleCardData }) {
+export function ModuleCard({
+  card,
+  index,
+}: {
+  card: ModuleCardData;
+  index: number;
+}) {
   return (
     <Link
       href={card.href}
+      // Pass the index to a standard CSS variable
+      style={{ "--index": index } as React.CSSProperties}
       className={cn(
         "group flex flex-col justify-between bg-white rounded-3xl p-4 border-2 border-brand-navy",
         "border-2 border-transparent shadow-neumorphic-idle transition-all duration-300 ease-in-out",
         "hover:-translate-y-1 hover:border-brand-navy hover:shadow-neumorphic-active",
         "cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-brand-navy",
+        "animate-in fade-in zoom-in-80 duration-500 ease-out fill-mode-both",
+        // The Stagger Calculation
+        // calc() inside the arbitrary utility allows Tailwind to generate ONE class
+        // that handles EVERY index dynamically via the variable.
+        "delay-[calc(var(--index)*100ms)]",
       )}
       aria-label={`Maps to ${card.title} module`}
     >

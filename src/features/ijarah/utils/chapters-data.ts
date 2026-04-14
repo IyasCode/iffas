@@ -37,7 +37,7 @@ export const IJARAH_CHAPTERS_DATA: Record<string, IjarahChapterConfig> = {
         id: "2",
         title: "The Structural Divergence",
         lessonNumber: "Lesson 2:",
-        isActive: true,
+        isActive: false,
       },
       {
         id: "3",

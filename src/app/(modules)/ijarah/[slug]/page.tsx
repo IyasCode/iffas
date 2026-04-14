@@ -9,14 +9,6 @@
  * ============================================================================
  */
 
-/**
- * ============================================================================
- * FEATURE: Ijarah
- * LAYER: Next.js App Router (Server Component)
- * FILE: src/app/(modules)/ijarah/[slug]/page.tsx
- * ============================================================================
- */
-
 import { notFound } from "next/navigation";
 import { getIjarahChapterData } from "@/features/ijarah/utils/chapters-data";
 import { getIjarahLessonData } from "@/features/ijarah/utils/lesson-data-mapper";
@@ -35,11 +27,11 @@ export default async function IjarahChapterPage({
   const { slug } = await params;
   const { lessonId } = await searchParams;
 
-  // 1. Fetch chapter configuration for the main menu
+  // Fetch chapter configuration for the main menu
   const chapterData = getIjarahChapterData(slug);
   if (!chapterData) notFound();
 
-  // 2. Fetch specific lesson data if an overlay is requested via ?lessonId=
+  // Fetch specific lesson data if an overlay is requested via ?lessonId=
   const activeLessonData = lessonId ? getIjarahLessonData(lessonId) : null;
 
   return (
@@ -50,10 +42,11 @@ export default async function IjarahChapterPage({
         lessons={chapterData.lessons}
       />
 
-      {/* Hydrate the LessonOverlay only when a valid lesson is requested.
-        The 'activeLessonData' is a plain serializable object[cite: 18].
+      {/* 
+        We always render the overlay and let the Client Component manage 
+        the cached state to preserve the slide-out exit animation. 
       */}
-      {activeLessonData && <LessonOverlay lesson={activeLessonData} />}
+      <LessonOverlay lesson={activeLessonData || null} />
     </div>
   );
 }

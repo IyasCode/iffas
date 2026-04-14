@@ -11,6 +11,7 @@ export function IjarahCurriculumHero() {
       className={cn(
         "flex flex-col items-center text-center max-w-3xl mx-auto mb-16",
         "space-y-6",
+        "animate-in fade-in duration-700",
       )}
     >
       <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">

@@ -16,6 +16,7 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -25,15 +26,46 @@ import { LessonNavbar } from "./LessonNavbar";
 import { LessonSegmentRenderer } from "./LessonSegmentRenderer";
 
 interface LessonOverlayProps {
-  lesson: LessonData;
+  lesson: LessonData | null;
 }
 
+// ----------------------------------------------------------------------------
+// 1. THE CACHING WRAPPER
+// ----------------------------------------------------------------------------
 export function LessonOverlay({ lesson }: LessonOverlayProps) {
+  // Retain the lesson data for the exit animation.
+  const [activeLesson, setActiveLesson] = useState<LessonData | null>(lesson);
+
+  useEffect(() => {
+    // Only update the cache if a NEW valid lesson is passed in.
+    // If null is passed (user clicked close), we keep the old data cached.
+    if (lesson) {
+      setActiveLesson(lesson);
+    }
+  }, [lesson]);
+
+  // If we never had a lesson loaded on this page visit, render absolutely nothing.
+  if (!activeLesson) return null;
+
+  // The sheet is "open" strictly when the parent passes a valid lesson.
+  // When the parent passes null, isOpen becomes false, triggering the slide-out.
+  const isOpen = !!lesson;
+
+  // Delegate to the inner component so React Hooks aren't conditionally broken
+  return <LessonSheet lesson={activeLesson} isOpen={isOpen} />;
+}
+
+// ----------------------------------------------------------------------------
+// 2. THE INNER SHEET COMPONENT
+// ----------------------------------------------------------------------------
+interface LessonSheetProps {
+  lesson: LessonData;
+  isOpen: boolean;
+}
+
+function LessonSheet({ lesson, isOpen }: LessonSheetProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  // Controls the slide-in visibility based on the URL parameter
-  const isOpen = searchParams.get("lessonId") === lesson.id;
 
   const {
     revealedSegments,
@@ -43,11 +75,12 @@ export function LessonOverlay({ lesson }: LessonOverlayProps) {
     newestSegmentRef,
     revealNext,
     answerQuiz,
-    quizState, // Derived from the state object in the hook
+    quizState,
   } = useLessonFlow(lesson);
 
   const handleClose = () => {
-    // Soft-navigate to remove the URL param, triggering the slide-out animation
+    // Soft-navigate to remove the URL param.
+    // This turns 'lesson' to null in page.tsx, triggering isOpen=false here.
     const params = new URLSearchParams(searchParams.toString());
     params.delete("lessonId");
     router.push(`?${params.toString()}`, { scroll: false });
@@ -102,7 +135,7 @@ export function LessonOverlay({ lesson }: LessonOverlayProps) {
           {canContinue && (
             <Button
               onClick={isLastSegment ? handleClose : revealNext}
-              className="rounded-full shadow-xl px-10 py-7 text-lg font-bold bg-brand-dark-navy hover:bg-brand-navy text-white transition-transform hover:-translate-y-1"
+              className="rounded-full shadow-xl px-10 py-7 text-lg font-bold bg-brand-dark-navy hover:bg-brand-navy text-white transition-transform hover:-translate-y-1 cursor-pointer"
             >
               {isLastSegment ? "Complete" : "Continue"}
             </Button>
