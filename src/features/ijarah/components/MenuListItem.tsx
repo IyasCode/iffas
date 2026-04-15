@@ -40,7 +40,7 @@ export function MenuListItem({ lesson, index }: MenuListItemProps) {
       }}
     >
       <InteractivePortal
-        isActive={lesson.isActive}
+        status={lesson.status}
         title={lesson.title}
         lessonId={lesson.id}
       />

@@ -8,6 +8,8 @@
  * ============================================================================
  */
 
+import { LessonStatus } from "./curriculum-types";
+
 /**
  * Represents a single educational lesson within a chapter menu sequence.
  */
@@ -30,5 +32,5 @@ export interface ChapterLesson {
    * Drives the visual state machine (e.g., triggering the active blue portal
    * versus the inactive gray portal).
    */
-  readonly isActive: boolean;
+  status: LessonStatus;
 }
