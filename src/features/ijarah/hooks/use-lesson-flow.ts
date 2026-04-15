@@ -21,6 +21,8 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import type { LessonData } from "../types/lesson";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 export function useLessonFlow(lesson: LessonData) {
   // Define unique storage keys for the specific lesson
@@ -119,6 +121,26 @@ export function useLessonFlow(lesson: LessonData) {
     }
   }, [revealedIndex, isHydrated]);
 
+  const router = useRouter();
+  const [isPendingTransition, startTransition] = useTransition();
+
+  // --------------------------------------------------------------------------
+  // ROUTING & TRANSITIONS: Handle cross-chapter navigation smoothly
+  // --------------------------------------------------------------------------
+  const navigateToNextChapter = useCallback(
+    (nextChapterSlug: string, nextLessonId: string) => {
+      // ARCHITECTURE NOTE: We wrap the heavy DOM/Route shift in startTransition
+      // This allows the Framer Motion "slide-out" animation to remain at 60fps
+      // while Next.js fetches the new chapter route in the background.
+      startTransition(() => {
+        // We pass the JUST_UNLOCKED state via URL parameters so the new
+        // Server Component knows to trigger the portal animation on mount.
+        router.push(`/ijarah/${nextChapterSlug}?unlocked=${nextLessonId}`);
+      });
+    },
+    [router],
+  );
+
   return {
     // Only return the slice of segments the user is allowed to see
     revealedSegments: lesson.segments.slice(0, revealedIndex + 1),
@@ -129,5 +151,7 @@ export function useLessonFlow(lesson: LessonData) {
     revealNext,
     answerQuiz,
     quizState,
+    isPendingTransition,
+    navigateToNextChapter,
   };
 }
