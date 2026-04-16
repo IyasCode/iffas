@@ -21,6 +21,7 @@
 
 import { LessonSegment } from "../types/lesson";
 import { InteractiveInput } from "./InteractiveInput";
+import { InteractiveSlider } from "./InteractiveSlider";
 import { KnowledgeCheck } from "./KnowledgeCheck";
 import { TextSegmentBlock } from "./TextSegmentBlock";
 import { VisualSegmentBlock } from "./VisualSegmentBlock";
@@ -69,6 +70,16 @@ export function LessonSegmentRenderer({
           );
 
         case "SLIDER_EXPLORE":
+          return (
+            <InteractiveSlider
+              key={segment.id}
+              questionText={segment.questionText}
+              hintText={segment.hintText}
+              payload={segment.payload}
+              onSuccess={onGateSuccess}
+            />
+          );
+
         case "SELECTOR_MATCH":
           return (
             <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 text-red-700 rounded-md">
