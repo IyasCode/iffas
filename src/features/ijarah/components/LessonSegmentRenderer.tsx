@@ -6,87 +6,86 @@
  * ============================================================================
  * A switch-based router component that maps specific discriminated union
  * segment types (`TEXT`, `VISUAL`, `QUIZ`) to their respective DOM structures.
- * * ARCHITECTURE NOTE: Utilizes a TypeScript exhaustive check
+ * * ARCHITECTURE NOTE:
+ * - Utilizes a TypeScript exhaustive check
  * (`const _exhaustiveCheck: never`) in the default case. This guarantees
  * a hard compilation failure if a new segment type is ever added to the
  * domain model without a corresponding UI renderer being built here.
+ * - Pure presentation component. Acts as a strict switch-router mapping
+ * discriminated union types to their specific DOM blocks.
+ * State progression is delegated entirely to useLessonFlow.ts.
  * ============================================================================
  */
 
-import Image from "next/image";
-import type { LessonSegment } from "../types/lesson";
+"use client";
+
+import { LessonSegment } from "../types/lesson";
+import { InteractiveInput } from "./InteractiveInput";
 import { KnowledgeCheck } from "./KnowledgeCheck";
+import { TextSegmentBlock } from "./TextSegmentBlock";
+import { VisualSegmentBlock } from "./VisualSegmentBlock";
 
 interface LessonSegmentRendererProps {
   segment: LessonSegment;
   isSolved: boolean;
   onAnswerQuiz: (segmentId: string, isCorrect: boolean) => void;
+  onGateSuccess: () => void;
 }
 
 export function LessonSegmentRenderer({
   segment,
   isSolved,
   onAnswerQuiz,
+  onGateSuccess,
 }: LessonSegmentRendererProps) {
+  // EXHAUSTIVE TYPE CHECKING AT THE ROOT LEVEL
   switch (segment.type) {
     case "TEXT":
-      return (
-        <div className="py-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          {segment.title && (
-            <h2 className="mb-4 text-2xl font-bold text-brand-dark-navy">
-              {segment.title}
-            </h2>
-          )}
-          {/* Apply tabular-nums to ensure financial figures align correctly */}
-          <p className="whitespace-pre-wrap leading-relaxed text-lg text-brand-navy/90 tabular-nums">
-            {segment.content}
-          </p>
-        </div>
-      );
+      return <TextSegmentBlock segment={segment} />;
 
     case "VISUAL":
-      return (
-        <div className="py-8 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          {/* Optimized Next.js Image with strict aspect-ratio */}
-          <div className="relative w-full aspect-video overflow-hidden rounded-xl border-2 border-brand-light-gray shadow-md">
-            <Image
-              src={segment.imageSrc}
-              alt={segment.altText}
-              fill
-              sizes="(max-width: 900px) 100vw, 900px"
-              className="object-cover"
-              priority
-            />
-          </div>
-          {(segment.narrativeTitle || segment.narrativeContent) && (
-            <div className="pl-6 py-2 border-l-4 border-brand-dark-navy bg-brand-cream/30">
-              {segment.narrativeTitle && (
-                <h4 className="font-bold text-brand-navy mb-1">
-                  {segment.narrativeTitle}
-                </h4>
-              )}
-              <p className="text-brand-navy/80 italic leading-relaxed text-lg">
-                {segment.narrativeContent}
-              </p>
-            </div>
-          )}
-        </div>
-      );
+      return <VisualSegmentBlock segment={segment} />;
 
     case "QUIZ":
       return (
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <KnowledgeCheck
-            segment={segment}
-            isSolved={isSolved}
-            onAnswer={onAnswerQuiz}
-          />
-        </div>
+        <KnowledgeCheck
+          segment={segment}
+          isSolved={isSolved}
+          onAnswer={onAnswerQuiz} // Fixed: Maps to the correct KnowledgeCheck prop
+        />
       );
 
+    case "INTERACTIVE":
+      // EXHAUSTIVE TYPE CHECKING AT THE PAYLOAD LEVEL
+      switch (segment.payload.variant) {
+        case "INPUT_MATCH":
+          return (
+            <InteractiveInput
+              questionText={segment.questionText}
+              hintText={segment.hintText}
+              payload={segment.payload}
+              onSuccess={onGateSuccess} // Triggers revealNext in useLessonFlow
+            />
+          );
+
+        case "SLIDER_EXPLORE":
+        case "SELECTOR_MATCH":
+          return (
+            <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 text-red-700 rounded-md">
+              <p className="font-bold">TODO [Architecture]:</p>
+              <p>
+                Component for {segment.payload.variant} is not yet implemented.
+              </p>
+            </div>
+          );
+
+        default:
+          const _exhaustiveCheck: never = segment.payload;
+          return null;
+      }
+
     default:
-      // Exhaustive check to ensure all union types are handled
-      const _exhaustiveCheck: never = segment;
+      const _segmentCheck: never = segment;
       return null;
   }
 }

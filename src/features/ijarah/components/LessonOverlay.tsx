@@ -177,6 +177,7 @@ function LessonSheet({ lesson, isOpen }: LessonSheetProps) {
                       segment.type === "QUIZ" ? !!quizState[segment.id] : false
                     }
                     onAnswerQuiz={answerQuiz}
+                    onGateSuccess={revealNext}
                   />
                 </div>
               );
