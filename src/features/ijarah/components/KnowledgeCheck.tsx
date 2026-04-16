@@ -39,9 +39,11 @@ export function KnowledgeCheck({
 
   return (
     <div className="p-6 my-8 border-2 rounded-xl border-brand-light-gray bg-white/60 backdrop-blur-sm shadow-sm">
+      {/* ARCHITECTURAL FIX: Data-Driven Title Rendering */}
       <h3 className="mb-4 text-lg font-bold text-brand-dark-navy uppercase tracking-wider">
-        Quick Knowledge Check
+        {segment.customTitle || "Quick Knowledge Check"}
       </h3>
+
       <p className="mb-6 text-brand-navy font-medium text-lg leading-relaxed">
         {segment.question}
       </p>
