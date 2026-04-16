@@ -71,12 +71,20 @@ export type InputMatchPayload = {
 
 /**
  * Payload for exploratory ranges (Prepared for Lesson 8).
+ * ARCHITECTURE NOTE: All text strings and base math inputs are passed here
+ * to keep the UI component purely presentational.
  */
 export type SliderExplorePayload = {
   readonly variant: "SLIDER_EXPLORE";
+  readonly formulaLabel: string; // e.g., "Security Deposit = Cost of Asset × Deposit Percentage"
   readonly min: number;
   readonly max: number;
   readonly step: number;
+  readonly baseAmount: number; // e.g., 620000
+  readonly expectedValue: number; // e.g., 12 (represents 12%)
+  readonly feedbackUnder: string;
+  readonly feedbackAt: string;
+  readonly feedbackOver: string;
 };
 
 /**
