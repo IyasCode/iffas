@@ -87,6 +87,66 @@ export type SliderExplorePayload = {
   readonly feedbackOver: string;
 };
 
+// ============================================================================
+// SCENARIO SLIDER TYPES (Lesson 9)
+// ============================================================================
+
+export type ScenarioStatus = "success" | "warning" | "error";
+
+export type ScenarioData = {
+  readonly label: string; // e.g., "1 Year"
+  readonly months: number; // e.g., 12
+  readonly rentalFormatted: string; // e.g., "~$55,200"
+  readonly status: ScenarioStatus;
+  readonly analysisTitle: string; // e.g., "Extreme Credit Risk"
+  readonly analysisText: string; // e.g., "Payment is unsustainable..."
+};
+
+// ============================================================================
+// EQUATION BUILDER TYPES (Lesson 11)
+// ============================================================================
+
+export type EquationVariable = {
+  readonly id: string;
+  readonly label: string;
+  readonly amount: number; // Raw primitive (e.g., 620000) to protect the math
+};
+
+export type EquationFeedback = {
+  readonly status: "success" | "error" | "warning";
+  readonly title: string;
+  readonly text: string;
+};
+
+/**
+ * Payload for the "Tap-to-Slot" pedagogical formula builder.
+ * ARCHITECTURE NOTE: Uses a dictionary lookup (`feedbackDictionary`)
+ * to determine the response for specific variable combinations, keeping
+ * the UI component purely presentational.
+ */
+export type EquationBuilderPayload = {
+  readonly variant: "EQUATION_BUILDER";
+  readonly operatorLabel: string; // e.g., "MINUS"
+  readonly resultLabel: string; // e.g., "Net Financing Amount"
+  readonly variables: readonly EquationVariable[];
+  readonly expectedSequence: readonly string[]; // The winning array of IDs
+  readonly feedbackDictionary: Readonly<Record<string, EquationFeedback>>;
+  readonly fallbackFeedback: EquationFeedback; // Catches any undefined combinations
+};
+
+/**
+ * Payload for discrete scenario exploration.
+ * Maps specific integer slider values to predefined pedagogical scenarios.
+ */
+export type ScenarioSliderPayload = {
+  readonly variant: "SCENARIO_SLIDER";
+  readonly min: number;
+  readonly max: number;
+  readonly step: number;
+  readonly initialValue: number;
+  readonly scenarios: Readonly<Record<number, ScenarioData>>;
+};
+
 /**
  * Payload for choosing between distinct contractual paths (Prepared for Lesson 9/10).
  */
@@ -102,7 +162,9 @@ export type SelectorMatchPayload = {
 export type InteractivePayload =
   | InputMatchPayload
   | SliderExplorePayload
-  | SelectorMatchPayload;
+  | SelectorMatchPayload
+  | ScenarioSliderPayload
+  | EquationBuilderPayload;
 
 /**
  * The wrapper segment for all interactivity.
