@@ -22,6 +22,8 @@
 import { LessonSegment } from "../types/lesson";
 import { InteractiveInput } from "./InteractiveInput";
 import { InteractiveSlider } from "./InteractiveSlider";
+import { InteractiveScenarioSlider } from "./InteractiveScenarioSlider";
+import { InteractiveEquationBuilder } from "./InteractiveEquationBuilder";
 import { KnowledgeCheck } from "./KnowledgeCheck";
 import { TextSegmentBlock } from "./TextSegmentBlock";
 import { VisualSegmentBlock } from "./VisualSegmentBlock";
@@ -72,6 +74,28 @@ export function LessonSegmentRenderer({
         case "SLIDER_EXPLORE":
           return (
             <InteractiveSlider
+              key={segment.id}
+              questionText={segment.questionText}
+              hintText={segment.hintText}
+              payload={segment.payload}
+              onSuccess={onGateSuccess}
+            />
+          );
+
+        case "SCENARIO_SLIDER":
+          return (
+            <InteractiveScenarioSlider
+              key={segment.id}
+              questionText={segment.questionText}
+              hintText={segment.hintText}
+              payload={segment.payload}
+              onSuccess={onGateSuccess}
+            />
+          );
+
+        case "EQUATION_BUILDER":
+          return (
+            <InteractiveEquationBuilder
               key={segment.id}
               questionText={segment.questionText}
               hintText={segment.hintText}
