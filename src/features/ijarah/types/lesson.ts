@@ -23,6 +23,12 @@ export type BaseSegment = {
   readonly type: SegmentType;
 };
 
+export type MathProofConfig = {
+  readonly buttonLabel: string;
+  readonly title: string;
+  readonly latexContent: string;
+};
+
 export type TextSegment = BaseSegment & {
   readonly type: "TEXT";
   readonly title?: string;
@@ -31,6 +37,7 @@ export type TextSegment = BaseSegment & {
     readonly label: string;
     readonly text: string;
   }[];
+  readonly mathProof?: MathProofConfig;
 };
 
 export type VisualSegment = BaseSegment & {
@@ -147,6 +154,54 @@ export type ScenarioSliderPayload = {
   readonly scenarios: Readonly<Record<number, ScenarioData>>;
 };
 
+// ============================================================================
+// MULTI-SELECT BUILDER TYPES (Lesson 12)
+// ============================================================================
+
+export type SpreadOption = {
+  readonly id: string;
+  readonly label: string;
+  readonly percentage: number; // e.g., 2.5 represents 2.5%
+};
+
+/**
+ * Payload for the "Multi-Select" Risk Spread Builder.
+ * ARCHITECTURE NOTE: Utilizes a distractor dictionary to instantly map
+ * specific Shariah violations to user mis-clicks, keeping the React UI
+ * completely unaware of Islamic finance principles.
+ */
+export type MultiSelectBuilderPayload = {
+  readonly variant: "MULTI_SELECT_BUILDER";
+  readonly benchmarkRate: number; // e.g., 4 (for 4% SOFR)
+  readonly benchmarkLabel: string; // e.g., "SOFR"
+  readonly options: readonly SpreadOption[];
+  readonly correctIds: readonly string[]; // The required winning combination
+  readonly distractorFeedback: Readonly<Record<string, EquationFeedback>>;
+  readonly successFeedback: EquationFeedback;
+};
+
+// ============================================================================
+// BINARY SIMULATOR TYPES (Lesson 13)
+// ============================================================================
+
+export type BinarySimulatorState = {
+  readonly id: "flat_rate" | "true_yield"; // Acts as the animation trigger in the UI
+  readonly buttonLabel: string;
+  readonly feedbackStatus: "success" | "error" | "warning";
+  readonly feedbackTitle: string;
+  readonly feedbackText: string;
+};
+
+/**
+ * Payload for binary "A/B" state simulations (e.g., Flat Rate vs. True Yield).
+ * The UI reads the selected state's ID to trigger the correct CSS chart animation.
+ */
+export type BinarySimulatorPayload = {
+  readonly variant: "BINARY_SIMULATOR";
+  readonly optionA: BinarySimulatorState;
+  readonly optionB: BinarySimulatorState;
+};
+
 /**
  * Payload for choosing between distinct contractual paths (Prepared for Lesson 9/10).
  */
@@ -164,7 +219,9 @@ export type InteractivePayload =
   | SliderExplorePayload
   | SelectorMatchPayload
   | ScenarioSliderPayload
-  | EquationBuilderPayload;
+  | EquationBuilderPayload
+  | MultiSelectBuilderPayload
+  | BinarySimulatorPayload;
 
 /**
  * The wrapper segment for all interactivity.
