@@ -24,6 +24,8 @@ import { InteractiveInput } from "./InteractiveInput";
 import { InteractiveSlider } from "./InteractiveSlider";
 import { InteractiveScenarioSlider } from "./InteractiveScenarioSlider";
 import { InteractiveEquationBuilder } from "./InteractiveEquationBuilder";
+import { InteractiveSpreadBuilder } from "./InteractiveSpreadBuilder";
+import { InteractiveYieldSimulator } from "./InteractiveYieldSimulator";
 import { KnowledgeCheck } from "./KnowledgeCheck";
 import { TextSegmentBlock } from "./TextSegmentBlock";
 import { VisualSegmentBlock } from "./VisualSegmentBlock";
@@ -99,6 +101,26 @@ export function LessonSegmentRenderer({
               key={segment.id}
               questionText={segment.questionText}
               hintText={segment.hintText}
+              payload={segment.payload}
+              onSuccess={onGateSuccess}
+            />
+          );
+
+        case "MULTI_SELECT_BUILDER":
+          return (
+            <InteractiveSpreadBuilder
+              key={segment.id}
+              questionText={segment.questionText}
+              payload={segment.payload}
+              onSuccess={onGateSuccess}
+            />
+          );
+
+        case "BINARY_SIMULATOR":
+          return (
+            <InteractiveYieldSimulator
+              key={segment.id}
+              questionText={segment.questionText}
               payload={segment.payload}
               onSuccess={onGateSuccess}
             />
