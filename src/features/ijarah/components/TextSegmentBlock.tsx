@@ -1,16 +1,16 @@
 /**
  * ============================================================================
  * FEATURE: Ijarah
- * LAYER: UI Component (Presentation)
+ * LAYER: UI Components (Client/Server)
  * FILE: src/features/ijarah/components/TextSegmentBlock.tsx
  * ============================================================================
- * Renders standard text segments and optional structured bullet points.
- * ARCHITECTURE NOTE: Contains a safe string-parsing utility to bold text
- * preceding the first colon, mitigating the risks of magic-string parsing.
+ * Renders static text payloads, subpoints, and selectively mounts the
+ * mathematical proof engine if dictated by the static payload.
  * ============================================================================
  */
 
 import type { TextSegment } from "../types/lesson";
+import { MathProofDrawer } from "./MathProofOverlay";
 
 interface TextSegmentBlockProps {
   segment: TextSegment;
@@ -45,6 +45,13 @@ export function TextSegmentBlock({ segment }: TextSegmentBlockProps) {
             </li>
           ))}
         </ul>
+      )}
+
+      {/* THE LATEX PROOF GATEWAY */}
+      {segment.mathProof && (
+        <div className="mt-4 border-t border-slate-100 pt-2">
+          <MathProofDrawer config={segment.mathProof} />
+        </div>
       )}
     </div>
   );
